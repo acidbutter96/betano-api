@@ -13,6 +13,8 @@ notebook = "^7.2.2"
 numpy = "^2.1.2"
 pandas = "^2.2.3"
 undetected-chromedriver = "^3.5.5"
+ipython = "^8.28.0"
+fastapi = {extras = ["standard"], version = "^0.115.2"}
 
 [tool.poetry.group.dev.dependencies]
 mypy = "^1.12.0"
