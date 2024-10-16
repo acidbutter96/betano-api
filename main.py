@@ -8,8 +8,8 @@ def get_api() -> FastAPI:
         description="API for managing and interacting with the Betano bot",
         version="1.0.0",
         openapi_url="/api",
-        docs_url="/api/docs",
-        redoc_url=None,  # To disable ReDoc
+        docs_url="/",
+        redoc_url=False,  # To disable ReDoc
     )
 
     application.include_router(router)

@@ -1,6 +1,6 @@
-from services.betano_bot_servie import BetanoBotServie
+from src.services.betano_bot_service import BetanoBotService
 
 
 __all__ = [
-    "BetanoBotServie",
+    "BetanoBotService",
 ]
