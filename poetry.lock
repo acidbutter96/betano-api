@@ -424,6 +424,17 @@ files = [
 ]
 
 [[package]]
+name = "chromedriver-py"
+version = "129.0.6668.100"
+description = "chromedriver binaries for all platforms"
+optional = false
+python-versions = "*"
+files = [
+    {file = "chromedriver_py-129.0.6668.100-py3-none-any.whl", hash = "sha256:f99388b81feabefaf0bc1a984bab630f66ea87c29ad3ca163461a78d57d3585d"},
+    {file = "chromedriver_py-129.0.6668.100.tar.gz", hash = "sha256:e82e83d172968e603df59b6c024df097c8b2e69badb87c2128c8f1bc45883a12"},
+]
+
+[[package]]
 name = "click"
 version = "8.1.7"
 description = "Composable command line interface toolkit"
@@ -3120,4 +3131,4 @@ h11 = ">=0.9.0,<1"
 [metadata]
 lock-version = "2.0"
 python-versions = "3.12.5"
-content-hash = "fa05a2aba8d690e7b804808b53dae0f79b961a0daf3c29a6df29317836354cb2"
+content-hash = "373543e92c0e1891cd85cc3014da46ca0b1c4f66602c04142e90e38f51974da3"
