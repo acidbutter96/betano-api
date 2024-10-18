@@ -1,11 +1,10 @@
 from typing import Any, Coroutine
 
 from src.services import BetanoBotService
-from undetected_chromedriver import Chrome
 # import chromedriver_autoinstaller as chromedriver
 # chromedriver.install()
 
 
-async def get_undetected_chrome_driver_dependency() -> Coroutine[Chrome, None, Any]:
+async def get_betano_bot_service_dependency() -> Coroutine[BetanoBotService, None, Any]:
     betano_bot_service = BetanoBotService()
-    return betano_bot_service.driver
+    return betano_bot_service

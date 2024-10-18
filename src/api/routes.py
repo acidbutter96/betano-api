@@ -1,19 +1,19 @@
 from typing import Annotated
 
-from fastapi import APIRouter, Body, Depends
-from src.models import BetanoLoginRequest
-from src.dependencies import get_undetected_chrome_driver_dependency
-from undetected_chromedriver import Chrome
+import asyncio
 
+from fastapi import APIRouter, Body, Depends, HTTPException
+from src.models import BetanoLoginRequest
+from src.dependencies import get_betano_bot_service_dependency
+from src.services import BetanoBotService
 router = APIRouter()
 
 
-@router.get("/test")
-async def test(
-    driver: Annotated[Chrome, Depends(get_undetected_chrome_driver_dependency)],
+@router.get("/headers")
+async def get_headers(
+    betano_service: Annotated[BetanoBotService, Depends(get_betano_bot_service_dependency)],
 ):
-    driver.close()
-    return {"message": "Hello, World!"}
+    return {"message": betano_service.headers}
 
 
 @router.post(
@@ -21,12 +21,16 @@ async def test(
     description="Login endpoint",
 )
 async def login(
-    item: Annotated[BetanoLoginRequest, Body(embed=False, alias="login_data")]
+    item: Annotated[BetanoLoginRequest, Body(embed=False, alias="login_data")],
+    betano_service: Annotated[BetanoBotService, Depends(get_betano_bot_service_dependency)],
 ):
-    return {
-        "email": item.email.email,
-        "password": item.password,
-    }
+    try:
+        asyncio.run(betano_service.get_session_and_print())
+        # Call the async Playwright function
+        result = await betano_service.get_session_and_print()
+        return result
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 @router.get(

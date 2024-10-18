@@ -1,6 +1,6 @@
-from src.dependencies.undetected_chrome_driver_dependencies import get_undetected_chrome_driver_dependency  # noqa
+from src.dependencies.undetected_chrome_driver_dependencies import get_betano_bot_service_dependency  # noqa
 
 
 __all__ = [
-    "get_undetected_chrome_driver_dependency",
+    "get_betano_bot_service_dependency",
 ]

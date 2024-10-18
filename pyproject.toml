@@ -17,6 +17,7 @@ ipython = "^8.28.0"
 fastapi = {extras = ["standard"], version = "^0.115.2"}
 email-validator = "^2.2.0"
 chromedriver-py = "^129.0.6668.100"
+pytest-playwright = "^0.5.2"
 
 [tool.poetry.group.dev.dependencies]
 mypy = "^1.12.0"
