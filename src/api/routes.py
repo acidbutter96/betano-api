@@ -1,11 +1,10 @@
 from typing import Annotated
 
-import asyncio
-
 from fastapi import APIRouter, Body, Depends, HTTPException
 from src.models import BetanoLoginRequest
 from src.dependencies import get_betano_bot_service_dependency
 from src.services import BetanoBotService
+from src.services.betano_bot_service import betano_service
 router = APIRouter()
 
 
@@ -22,13 +21,10 @@ async def get_headers(
 )
 async def login(
     item: Annotated[BetanoLoginRequest, Body(embed=False, alias="login_data")],
-    betano_service: Annotated[BetanoBotService, Depends(get_betano_bot_service_dependency)],
+    # betano_service: Annotated[BetanoBotService, Depends(get_betano_bot_service_dependency)],
 ):
     try:
-        asyncio.run(betano_service.get_session_and_print())
-        # Call the async Playwright function
-        result = await betano_service.get_session_and_print()
-        return result
+        return await betano_service.get_session_and_print()
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 

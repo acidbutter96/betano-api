@@ -11,6 +11,7 @@ class BetanoBotService:
             # print(f"Headers: {self.headers}")
 
         self.url = url
+        asyncio.set_event_loop_policy(asyncio.WindowsProactorEventLoopPolicy())
 
     async def get_session_and_print(self):
         async with async_playwright() as p:
@@ -29,15 +30,19 @@ class BetanoBotService:
             page = await context.new_page()
             await page.goto(self.url)
             await asyncio.sleep(2)  # Non-blocking sleep
-
-            # Click login button
-            await page.click('xpath=//button[@data-qa="login-button"]')
-            await asyncio.sleep(2)
-
-            # Take screenshot and print title
             await page.screenshot(path="example.png")
-            title = await page.title()
-            print(f"Page Title: {title}")
 
-            await browser.close()
-            return {"title": title, "status": "Login successful"}
+            # # Click login button
+            # await page.click('xpath=//button[@data-qa="login-button"]')
+            # await asyncio.sleep(2)
+
+            # # Take screenshot and print title
+            # title = await page.title()
+            # print(f"Page Title: {title}")
+
+            # await browser.close()
+            # return {"title": title, "status": "Login successful"}
+            return await page.title()
+
+
+betano_service = BetanoBotService()
