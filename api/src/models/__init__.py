@@ -1,6 +1,6 @@
 from pydantic import BaseModel, NameEmail
 
 
-class BetanoLoginRequest(BaseModel):
+class SuperBetLoginRequest(BaseModel):
     email: NameEmail
     password: str

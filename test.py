@@ -1,7 +1,7 @@
-from src.services import BetanoBotService
+from api.src.services import SuperBetBotService
 import asyncio
 
 
-betano_bot_service = BetanoBotService()
+superbet_bot_service = SuperBetBotService()
 
-asyncio.run(betano_bot_service.get_session_and_print())
+asyncio.run(superbet_bot_service.get_session_and_print())
