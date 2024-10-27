@@ -4,6 +4,7 @@ import time
 
 from utils import create_login_file  # , read_login_file
 from playwright.sync_api import Browser
+from settings import env
 
 
 with open("./worker/headers.json", "r") as f:
@@ -15,13 +16,12 @@ def process(
     browser: Browser,
     job_id: str | None = None,
 ) -> None:
-    url = body.get("url")
     with browser.new_context(
         ignore_https_errors=True,
         extra_http_headers=headers,
     ) as ctx:
         with ctx.new_page() as page:
-            page.goto(url)
+            page.goto(env.URL)
 
             get_cookies_path = 'xpath=/html/body/div[2]/div[2]/div/div/div[2]/div/div/button[1]'  # noqa
 
@@ -31,7 +31,7 @@ def process(
 
             title = page.title()
             page.screenshot(path="entry-page.png")
-            logging.info(f"Title of {url!r} is {title!r}")
+            logging.info(f"Title of {env.URL!r} is {title!r}")
             time.sleep(5)
             # click on button login
 
@@ -107,11 +107,11 @@ def process(
 
             time.sleep(5)
 
-            page.goto("https://superbet.com/en-br/sport-bets/football/today")
-            time.sleep(5)
+            # page.goto("https://superbet.com/en-br/sport-bets/football/today")
+            # time.sleep(5)
+            # football_button_xpath = 'xpath=/html/body/div[1]/div[1]/div/div[1]/div[1]/div/div/div[2]/button[1]'  # noqa
+            # page.wait_for_selector(football_button_xpath)
+            # football_button = page.locator(football_button_xpath)
+            # football_button.click()
 
-            football_button_xpath = 'xpath=/html/body/div[1]/div[1]/div/div[1]/div[1]/div/div/div[2]/button[1]'  # noqa
-            page.wait_for_selector(football_button_xpath)
-            football_button = page.locator(football_button_xpath)
-            football_button.click()
-            time.sleep(200)
+            # time.sleep(200)

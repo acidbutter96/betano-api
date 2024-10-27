@@ -10,10 +10,17 @@
             "request": "launch",
             "module": "uvicorn",
             "args": [
-                "main:app",
+                "api.main:app",
                 "--reload"
             ],
             "jinja": true
+        },
+        {
+            "name": "Depurador do Python: Worker",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/worker/main.py",
+            "console": "integratedTerminal"
         }
     ]
 }
