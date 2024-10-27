@@ -8,7 +8,6 @@ class EnvironmentVariables:
         load_dotenv(dotenv_path=dotenv_path, override=True,)
         self.values = dotenv_values(dotenv_path)
         for key, value in self.values.items():
-            print(key, value)
             setattr(self, key, value)
 
     @cached_property

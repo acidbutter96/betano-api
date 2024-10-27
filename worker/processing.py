@@ -6,7 +6,7 @@ from utils import create_login_file  # , read_login_file
 from playwright.sync_api import Browser
 
 
-with open("./headers.json", "r") as f:
+with open("./worker/headers.json", "r") as f:
     headers = json.load(f)
 
 
@@ -15,7 +15,7 @@ def process(
     browser: Browser,
     job_id: str | None = None,
 ) -> None:
-    url = body.decode()
+    url = body.get("url")
     with browser.new_context(
         ignore_https_errors=True,
         extra_http_headers=headers,
