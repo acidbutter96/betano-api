@@ -1,10 +1,12 @@
 import logging
-from playwright.sync_api import Browser
-from utils import create_login_file, read_login_file
-import time
 import json
+import time
 
-with open("headers.json", "r") as f:
+from utils import create_login_file  # , read_login_file
+from playwright.sync_api import Browser
+
+
+with open("./headers.json", "r") as f:
     headers = json.load(f)
 
 

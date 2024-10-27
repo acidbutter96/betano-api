@@ -7,7 +7,7 @@ from fastapi import APIRouter, Body, Depends, HTTPException
 from api.src.models import SuperBetLoginRequest
 from api.src.dependencies import get_superbet_bot_service_dependency
 from api.src.services import SuperBetBotService
-from api.src.settings import env
+from settings import env
 
 router = APIRouter()
 
