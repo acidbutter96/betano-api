@@ -7,7 +7,7 @@ from fastapi import APIRouter, Body, Depends  # , HTTPException
 from api.src.models import SuperBetLoginRequest
 from api.src.dependencies import get_superbet_bot_service_dependency
 from api.src.services import SuperBetBotService
-from settings import env
+from api.src.settings import env
 
 router = APIRouter()
 
@@ -41,6 +41,7 @@ async def login(
         env.REDIS_STREAM_NAME,
         {
             "job_id": job_id,
+            # "task_name": "default",
         },
         maxlen=1000,  # Optional: Limit stream length
     )
@@ -48,8 +49,19 @@ async def login(
     return {"job_id": job_id}
 
 
-@router.get(
-    "/get_bets",
+@router.post(
+    "/push_bets",
 )
-async def get_bets():
-    return {"message": "Retrieved bets", "list": []}
+async def push_bets():
+    job_id = str(uuid4())
+
+    # Publish the message to Redis Stream
+    redis_client.xadd(
+        env.REDIS_STREAM_NAME,
+        {
+            "job_id": job_id,
+            "task_name": "push_bets",
+        },
+    )
+
+    return {"job_id": job_id}

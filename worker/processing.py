@@ -2,7 +2,7 @@ import logging
 import json
 import time
 
-from utils import create_login_file  # , read_login_file
+from core import create_login_file
 from playwright.sync_api import Browser
 from settings import env
 
@@ -12,7 +12,6 @@ with open("./worker/headers.json", "r") as f:
 
 
 def process(
-    body: bytes,
     browser: Browser,
     job_id: str | None = None,
 ) -> None:
@@ -107,11 +106,11 @@ def process(
 
             time.sleep(5)
 
-            # page.goto("https://superbet.com/en-br/sport-bets/football/today")
-            # time.sleep(5)
-            # football_button_xpath = 'xpath=/html/body/div[1]/div[1]/div/div[1]/div[1]/div/div/div[2]/button[1]'  # noqa
-            # page.wait_for_selector(football_button_xpath)
-            # football_button = page.locator(football_button_xpath)
-            # football_button.click()
+            page.goto("https://superbet.com/en-br/sport-bets/football/today")
+            time.sleep(5)
+            football_button_xpath = 'xpath=/html/body/div[1]/div[1]/div/div[1]/div[1]/div/div/div[2]/button[1]'  # noqa
+            page.wait_for_selector(football_button_xpath)
+            football_button = page.locator(football_button_xpath)
+            football_button.click()
 
             # time.sleep(200)

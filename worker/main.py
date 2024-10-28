@@ -6,7 +6,8 @@ import signal
 from playwright.sync_api import sync_playwright
 
 from settings import env
-from processing import process
+from core import WorkerListener
+
 
 import os
 
@@ -14,7 +15,11 @@ running = True
 
 
 # Add the parent directory to the system path
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+root_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+os.chdir(root_path)  # Change working directory
+sys.path.insert(0, root_path)  # Add root to Python path for imports
+
+print(f"Current Working Directory: {os.getcwd()}")
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
 
 
@@ -31,6 +36,8 @@ signal.signal(signal.SIGINT, handle_signal)
 def main() -> int:
     global running
 
+    listener = WorkerListener()
+
     # Initialize Redis connection
     redis_client = redis.Redis(
         host=env.REDIS_HOST,
@@ -43,7 +50,7 @@ def main() -> int:
     # Ensure Redis Stream exists (or create it if not)
     stream_name = env.REDIS_STREAM_NAME
 
-    groups = [group['name'] for group in redis_client.xinfo_groups(stream_name) if group.get('name')]
+    groups = [group.get('name') for group in redis_client.xinfo_groups(stream_name) or [] if group.get('name')]
 
     group_name = "processing_group"
     if group_name not in groups:
@@ -56,23 +63,27 @@ def main() -> int:
     def process_message(message_id, body: dict):
         """Process a message with Playwright and acknowledge it."""
         job_id = body.get("job_id")
+        task_name = body.get("task_name", "default")
+
         logging.info(
-            "Starting processing job with id %s",
+            "Starting processing job with id %s for task %s",
             job_id,
+            task_name,
         )
 
         try:
             with sync_playwright() as playwright:
                 with playwright.chromium.launch(headless=False,) as browser:
-                    process(
-                        body=body,
+                    listener.job_director(task_name)(
+                        payload=body,
                         browser=browser,
                         job_id=job_id,
                     )
 
             logging.info(
-                "Finished processing job with id %s",
+                "Finished processing job with id %s and task name %s",
                 job_id,
+                task_name
             )
             # Acknowledge the message after successful processing
             redis_client.xack(
