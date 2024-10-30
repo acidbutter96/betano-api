@@ -49,8 +49,8 @@ async def login(
     return {"job_id": job_id}
 
 
-@router.post(
-    "/push_bets",
+@router.get(
+    "/pull_active_tournaments",
 )
 async def push_bets():
     job_id = str(uuid4())
@@ -60,7 +60,7 @@ async def push_bets():
         env.REDIS_STREAM_NAME,
         {
             "job_id": job_id,
-            "task_name": "push_bets",
+            "task_name": "pull_active_tournaments",
         },
     )
 

@@ -62,7 +62,8 @@ def main() -> int:
 
     def process_message(message_id, body: dict):
         """Process a message with Playwright and acknowledge it."""
-        job_id = body.get("job_id")
+        job_id = body.get("job_id", "none")
+        payload = body.get("payload", {})
         task_name = body.get("task_name", "default")
 
         logging.info(
@@ -75,7 +76,7 @@ def main() -> int:
             with sync_playwright() as playwright:
                 with playwright.chromium.launch(headless=False,) as browser:
                     listener.job_director(task_name)(
-                        payload=body,
+                        payload=payload,
                         browser=browser,
                         job_id=job_id,
                     )
@@ -93,7 +94,6 @@ def main() -> int:
             )
         except Exception as e:
             logging.error(f"Failed to process job {job_id}: {e}")
-            raise Exception(f"Failed to process job {job_id}")
             # In case of failure, do not acknowledge the message so it remains pending
 
     def retry_pending_messages():

@@ -13,6 +13,7 @@ with open("./worker/headers.json", "r") as f:
 
 def process(
     browser: Browser,
+    payload,
     job_id: str | None = None,
 ) -> None:
     with browser.new_context(
@@ -100,7 +101,6 @@ def process(
             for origin in local_storage:
                 if origin['origin'] == 'https://superbet.com':
                     user = list(filter(lambda x: x['name'] == 'user', origin['localStorage']))  # noqa
-                    logging.info("User data: %s", user)
                     create_login_file(user)
                     break
 
@@ -112,5 +112,50 @@ def process(
             page.wait_for_selector(football_button_xpath)
             football_button = page.locator(football_button_xpath)
             football_button.click()
+            
+            competition_button_xpath = 'xpath=/html/body/div[1]/div[1]/div/div[1]/div[3]/div/div[2]/div/div/div[2]/div/button[2]/span'  # noqa
+            page.wait_for_selector(competition_button_xpath)
+            competition_button = page.locator(competition_button_xpath)
+            competition_button.click()
+            time.sleep(2)
 
-            # time.sleep(200)
+            brazil_btn_xpath = 'xpath=/html/body/div[1]/div[1]/div/div[1]/div[4]/div[2]/div[3]/div[3]/div'  # noqa
+            page.wait_for_selector(brazil_btn_xpath)
+            brazil_btn = page.locator(brazil_btn_xpath)
+            brazil_btn.click()
+            time.sleep(2)
+            
+            serie_a_btn_xpath = 'xpath=/html/body/div[1]/div[1]/div/div[1]/div[4]/div[2]/div[3]/div[3]/div[2]/main/div[1]/div'
+            page.wait_for_selector(serie_a_btn_xpath)
+            serie_a_btn = page.locator(serie_a_btn_xpath)
+            serie_a_btn.click()
+            time.sleep(2)
+
+            event_btn = 'xpath=/html/body/div[1]/div[1]/div/div[1]/div[4]/div[2]/div/div/div/div/div/div[1]/div/div[1]/div'  # noqa
+            page.wait_for_selector(event_btn)
+            event_btn = page.locator(event_btn)
+            event_btn.click()
+            time.sleep(2)
+
+            right_score_btn_xpath = 'xpath=/html/body/div[1]/div[1]/div/div[1]/div[4]/div[2]/div/div/div/div/div[2]/div[2]/div/div/div/div/div[3]/div[60]/div/div[1]'  # noqa
+            page.wait_for_selector(right_score_btn_xpath)
+            right_score_btn = page.locator(right_score_btn_xpath)
+            right_score_btn.click()
+            time.sleep(2)
+            
+            bets_xpaths = [
+                'xpath=/html/body/div[1]/div[1]/div/div[1]/div[4]/div[2]/div/div/div/div/div[2]/div[2]/div/div/div/div/div[3]/div[60]/div/div[2]/div/div/div[1]/button/div/div',
+                'xpath=/html/body/div[1]/div[1]/div/div[1]/div[4]/div[2]/div/div/div/div/div[2]/div[2]/div/div/div/div/div[3]/div[60]/div/div[2]/div/div/div[2]/button/div/div',
+                'xpath=/html/body/div[1]/div[1]/div/div[1]/div[4]/div[2]/div/div/div/div/div[2]/div[2]/div/div/div/div/div[3]/div[60]/div/div[2]/div/div/div[6]/button/div/div',
+                'xpath=/html/body/div[1]/div[1]/div/div[1]/div[4]/div[2]/div/div/div/div/div[2]/div[2]/div/div/div/div/div[3]/div[60]/div/div[2]/div/div/div[8]/button/div/div',
+            ]
+
+            logging.info("Clicking on bets")
+            for bet_xpath in bets_xpaths:
+                page.wait_for_selector(bet_xpath)
+                page.locator(bet_xpath).click()
+                time.sleep(2)
+
+            page.screenshot(path="clicked-on-bets.png")
+
+            time.sleep(500)
