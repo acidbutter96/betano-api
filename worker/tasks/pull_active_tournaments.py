@@ -51,7 +51,6 @@ def get_competitions_and_tournaments(page: Page):
                 "tournament_name": tournament_name,
             })
 
-        card.click()
         time.sleep(1)
 
         # Append competition card data, including tournaments, to the main data list

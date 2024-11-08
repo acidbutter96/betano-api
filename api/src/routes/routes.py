@@ -1,3 +1,5 @@
+import asyncio
+import json
 import redis
 from uuid import uuid4
 
@@ -49,10 +51,10 @@ async def login(
     return {"job_id": job_id}
 
 
-@router.get(
+@router.post(
     "/pull_active_tournaments",
 )
-async def push_bets():
+async def pull_active_tournaments():
     job_id = str(uuid4())
 
     # Publish the message to Redis Stream
@@ -64,4 +66,17 @@ async def push_bets():
         },
     )
 
-    return {"job_id": job_id}
+    with open("./saved_tournaments/tournaments.json", "w") as f:
+        json.dump([], f)
+
+    empty_list = []
+
+    while not empty_list:
+        with open("./saved_tournaments/tournaments.json", "r") as f:
+            empty_list = json.load(f, )
+        asyncio.sleep(2)
+
+    return {
+        "job_id": job_id,
+        "data": empty_list,
+    }

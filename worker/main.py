@@ -50,7 +50,11 @@ def main() -> int:
     # Ensure Redis Stream exists (or create it if not)
     stream_name = env.REDIS_STREAM_NAME
 
-    groups = [group.get('name') for group in redis_client.xinfo_groups(stream_name) or [] if group.get('name')]
+    try:
+        groups = [group.get('name') for group in redis_client.xinfo_groups(stream_name)]
+    except Exception as e:  # noqa
+        groups = []
+        logging.error("group doesn't exists yet")
 
     group_name = "processing_group"
     if group_name not in groups:
