@@ -1,0 +1,4 @@
+{
+    "Accept": "application/json, text/plain, */*",
+    "Accept-Encoding": "gzip, deflate, br, zstd"
+}

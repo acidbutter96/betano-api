@@ -1,0 +1,19 @@
+from fastapi import FastAPI
+from api.src.routes import router
+
+
+def get_api() -> FastAPI:
+    application = FastAPI(
+        title="Betano Bot Application",
+        description="API for managing and interacting with the Betano bot",
+        version="1.0.0",
+        openapi_url="/api",
+        docs_url="/",
+        redoc_url=False,  # Disable ReDoc
+    )
+
+    application.include_router(router)
+    return application
+
+
+app = get_api()
